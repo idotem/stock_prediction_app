@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stock prediction</title>
+</head>
+<body>
+<h1>Stock prediction for {{ selected_symbol }}</h1>
+<h2>Pick a stock to predict trend</h2>
+<label>
+    <select id="stock">
+        {% for symbol in stocks %}
+            <option value="{{ symbol }}" {% if symbol == selected_symbol %}selected{% endif %}>{{ symbol }}</option>
+        {% endfor %}
+    </select>
+</label>
+
+<h3 id="prediction">{{ prediction }}</h3>
+
+</body>
+
+<script>
+    const selectElement = document.getElementById('stock');
+
+    selectElement.addEventListener('change', function () {
+        const selectedSymbol = this.value;
+        // Redirect to the stock detail page
+        window.location.href = `/stocks/${selectedSymbol}/`;
+    });
+
+    const predictionElem = document.getElementById('prediction');
+    const prediction = "{{ prediction }}"
+    if (prediction  === 'BUY') {
+        predictionElem.style.color = 'green'
+    } else {
+        predictionElem.style.color = 'red'
+    }
+</script>
+</html>
