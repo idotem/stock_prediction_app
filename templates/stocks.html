@@ -9,7 +9,7 @@
 <h2>Pick a stock to predict trend</h2>
 <div>
     <label>
-        <select id="stock">
+        <select id="stock" style="width: 15rem; height: 3rem; padding: 3px; background-color: beige; color: black">
             {% for symbol in stocks %}
                 <option value="{{ symbol }}" {% if symbol == selected_symbol %}selected{% endif %}>{{ symbol }}</option>
             {% endfor %}

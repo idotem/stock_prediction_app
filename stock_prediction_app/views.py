@@ -22,7 +22,9 @@ percentage_limit = 5
 def default_stocks(request):
     symbol = "AAPL"
     context = {"stocks": stock_symbols,
-               "prediction": get_insider_pred(symbol),
+               "insider": get_insider_pred(symbol),
+               "analyst_rcmd": get_analyst_recommendation_pred(symbol),
+               "analyst_est": get_analyst_estimations_pred(symbol),
                "selected_symbol": symbol}
     return render(request, "stocks.html", context)
 
@@ -123,7 +125,7 @@ def get_analyst_estimations_pred(stock_symbol):
 
     seq_predicted_trend_encoded = model.predict(new_data)
     seq_y_pred_new_data = np.argmax(seq_predicted_trend_encoded, axis=1)
-    seq_pred = label_encoder.inverse_transform(y_pred)[0]
+    seq_pred = label_encoder.inverse_transform(seq_y_pred_new_data)[0]
 
     # smote = SMOTE()
     # X_train_resampled, y_train_resampled = smote.fit_resample(X_train, y_train)
