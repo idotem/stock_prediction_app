@@ -5,6 +5,7 @@ import pandas as pd
 import datetime
 import missingno as msno
 from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import StackingClassifier
 from xgboost import XGBClassifier
 from sklearn.model_selection import train_test_split, cross_val_score, TimeSeriesSplit
 from sklearn.ensemble import RandomForestClassifier
@@ -146,7 +147,6 @@ def get_analyst_estimations_pred(stock_symbol):
             "decision_tree": {"trend": dt_pred, "accuracy": round(dt_acc, 2)}}
 
 
-
 def get_analyst_recommendation_pred(stock_symbol):
     analyst_rcmd = pd.read_json('./data/analyst_data/' + stock_symbol + '_RCMD.json')
     analyst_rcmd_df = pd.DataFrame(analyst_rcmd)
@@ -182,45 +182,82 @@ def get_analyst_recommendation_pred(stock_symbol):
     #     X_train, X_test = X.iloc[train_index], X.iloc[test_index]
     #     y_train, y_test = y.iloc[train_index], y.iloc[test_index]
 
-    model = XGBClassifier(use_label_encoder=False, eval_metric='mlogloss', enable_categorical=True)
-    model.fit(X_train, y_train)
-    xg_y_pred = model.predict(X_test)
+    xg_model = XGBClassifier(use_label_encoder=False, eval_metric='mlogloss', enable_categorical=True)
+    xg_model.fit(X_train, y_train)
+    xg_y_pred = xg_model.predict(X_test)
     xg_acc = accuracy_score(y_test, xg_y_pred)
+    xg_pred_labels = label_encoder.inverse_transform(xg_y_pred)
 
     new_data = merged_df.tail(1).drop(columns=['date', 'dym', 'symbol', 'pct_change', 'trend', 'Adj Close'],
                                       inplace=False)
-    xg_predicted_trend_encoded = model.predict(new_data)
+    xg_predicted_trend_encoded = xg_model.predict(new_data)
     xg_pred = label_encoder.inverse_transform(xg_predicted_trend_encoded)[0]
 
     Dense = tf.keras.layers.Dense
     Input = tf.keras.layers.Input
-    model = tf.keras.models.Sequential([
+    seq_model = tf.keras.models.Sequential([
         Input(shape=(X_train.shape[1],)),
         Dense(64, activation='relu'),
         Dense(32, activation='relu'),
         Dense(2, activation='softmax')  # 2 classes: Buy, Hold
     ])
-    model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+    seq_model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
-    model.fit(X_train, y_train, epochs=50, batch_size=10, validation_split=0.2)
-    y_pred_prob = model.predict(X_test)
-    seq_y_pred = np.argmax(y_pred_prob, axis=1)
+    seq_model.fit(X_train, y_train, epochs=50, batch_size=10, validation_split=0.2)
+    seq_y_pred_prob = seq_model.predict(X_test)
+    seq_y_pred = np.argmax(seq_y_pred_prob, axis=1)
     seq_acc = accuracy_score(y_test, seq_y_pred)
-    seq_predicted_trend_encoded = model.predict(new_data)
-    y_pred_new_data = np.argmax(seq_predicted_trend_encoded, axis=1)
+    seq_y_pred_labels = label_encoder.inverse_transform(seq_y_pred)
+
+    seq_predicted_trend_prob = seq_model.predict(new_data)
+    y_pred_new_data = np.argmax(seq_predicted_trend_prob, axis=1)
     seq_pred = label_encoder.inverse_transform(y_pred_new_data)[0]
 
-    model = RandomForestClassifier(n_estimators=100, max_depth=12, random_state=42)
-    model.fit(X_train, y_train)
+    dt_model = RandomForestClassifier(n_estimators=100, max_depth=12, random_state=42)
+    dt_model.fit(X_train, y_train)
 
-    dt_y_pred = model.predict(X_test)
+    dt_y_pred = dt_model.predict(X_test)
     dt_acc = accuracy_score(y_test, dt_y_pred)
-    dt_predicted_trend_encoded = model.predict(new_data)
+    dt_y_pred_labels = label_encoder.inverse_transform(dt_y_pred)
+
+    dt_predicted_trend_encoded = dt_model.predict(new_data)
     dt_pred = label_encoder.inverse_transform(dt_predicted_trend_encoded)[0]
 
-    return {"xg_classifier": {"trend": xg_pred, "accuracy": round(xg_acc, 2)},
-            "sequential": {"trend": seq_pred, "accuracy": round(seq_acc, 2)},
-            "decision_tree": {"trend": dt_pred, "accuracy": round(dt_acc, 2)}}
+    xg_y_pred_prob = xg_model.predict_proba(X_test)
+    dt_y_pred_prob = dt_model.predict_proba(X_test)
+    avg_probs = (xg_y_pred_prob + dt_y_pred_prob + seq_y_pred_prob) / 3
+
+    avg_y_pred = np.argmax(avg_probs, axis=1)
+    avg_acc = accuracy_score(y_test, avg_y_pred)
+
+    xg_predicted_trend_prob = xg_model.predict_proba(new_data)
+    dt_predicted_trend_prob = dt_model.predict_proba(new_data)
+
+    avg_trend_pred_probs = (xg_predicted_trend_prob + dt_predicted_trend_prob + seq_predicted_trend_prob) / 3
+    final_trend_pred = np.argmax(avg_trend_pred_probs, axis=1)
+    final_trend_pred_label = label_encoder.inverse_transform(final_trend_pred)[0]
+
+    # Stack the models
+    stacking_clf = StackingClassifier(estimators=[
+        ('xgboost', xg_model),
+        ('random-forest', dt_model)],
+        final_estimator=LogisticRegression())
+
+    # Fit the stacking classifier
+    stacking_clf.fit(X_train, y_train)
+
+    # Predict using the meta-classifier
+    stacking_pred = stacking_clf.predict(X_test)
+    stacking_acc = accuracy_score(y_test, stacking_pred)
+
+    stacking_new_data_pred = stacking_clf.predict(new_data)
+    stacking_trend_pred_label = label_encoder.inverse_transform(stacking_new_data_pred)[0]
+
+    return {"xg_classifier": {"trend": xg_pred, "pred": xg_pred_labels, "accuracy": round(xg_acc, 2)},
+            "sequential": {"trend": seq_pred, "pred": seq_y_pred_labels, "accuracy": round(seq_acc, 2)},
+            "decision_tree": {"trend": dt_pred, "pred": dt_y_pred_labels, "accuracy": round(dt_acc, 2)},
+            "stacking": {"trend": stacking_pred, "pred": stacking_trend_pred_label, "accuracy": round(stacking_acc, 2)},
+            "average": {"trend": final_trend_pred_label, "pred": avg_y_pred, "accuracy": round(avg_acc, 2)}}
 
 
 def get_insider_pred(stock_symbol):
@@ -281,7 +318,7 @@ def get_insider_pred(stock_symbol):
 
     return {"xg_classifier": insider_xg_classifier_pred(X_test, X_train, last_row, trend_encoder, y_test, y_train),
             "sequential": insider_sequential_pred(X_test, X_train, last_row, trend_encoder, y_test, y_train),
-            "decision_tree": insider_decision_tree_pred(X_test, X_train, last_row, trend_encoder, y_test, y_train)}
+            "decision_tree": insider_random_forrest_pred(X_test, X_train, last_row, trend_encoder, y_test, y_train)}
 
 
 def insider_xg_classifier_pred(X_test, X_train, last_row, trend_encoder, y_test, y_train):
@@ -291,10 +328,11 @@ def insider_xg_classifier_pred(X_test, X_train, last_row, trend_encoder, y_test,
     model = XGBClassifier(use_label_encoder=False, eval_metric='mlogloss', enable_categorical=True)
     model.fit(X_train, y_train)
     y_pred = model.predict(X_test)
+    y_pred_labels = trend_encoder.inverse_transform(y_pred)
     acc_score = accuracy_score(y_test, y_pred)
     predicted_trend_encoded = model.predict(last_row)
     predicted_trend = trend_encoder.inverse_transform(predicted_trend_encoded)
-    return {"trend": predicted_trend[0], "accuracy": round(acc_score, 2)}
+    return {"trend": predicted_trend[0], "pred": y_pred_labels, "accuracy": round(acc_score, 2)}
 
 
 def insider_sequential_pred(X_test, X_train, last_row, trend_encoder, y_test, y_train):
@@ -312,22 +350,24 @@ def insider_sequential_pred(X_test, X_train, last_row, trend_encoder, y_test, y_
     model.fit(X_train, y_train, epochs=50, batch_size=10, validation_split=0.2)
     y_pred_prob = model.predict(X_test)
     y_pred = np.argmax(y_pred_prob, axis=1)
+    y_pred_labels = trend_encoder.inverse_transform(y_pred)
     acc_score = accuracy_score(y_test, y_pred)
     predicted_trend_encoded = model.predict(last_row)
     last_row_pred = np.argmax(predicted_trend_encoded, axis=1)
     predicted_trend = trend_encoder.inverse_transform(last_row_pred)
-    return {"trend": predicted_trend[0], "accuracy": round(acc_score, 2)}
+    return {"trend": predicted_trend[0], "pred": y_pred_labels, "accuracy": round(acc_score, 2)}
 
 
-def insider_decision_tree_pred(X_test, X_train, last_row, trend_encoder, y_test, y_train):
+def insider_random_forrest_pred(X_test, X_train, last_row, trend_encoder, y_test, y_train):
     model = RandomForestClassifier(n_estimators=100, max_depth=43, random_state=42)
     # model.fit(X_train_resampled, y_train_resampled)
     model.fit(X_train, y_train)
 
     y_pred = model.predict(X_test)
 
+    y_pred_labels = trend_encoder.inverse_transform(y_pred)
     # print(classification_report(y_test, y_pred, target_names=['Buy', 'Hold', 'Hold']))
     acc_score = accuracy_score(y_test, y_pred)
     predicted_trend_encoded = model.predict(last_row)
     predicted_trend = trend_encoder.inverse_transform(predicted_trend_encoded)
-    return {"trend": predicted_trend[0], "accuracy": round(acc_score, 2)}
+    return {"trend": predicted_trend[0], "pred": y_pred_labels, "accuracy": round(acc_score, 2)}

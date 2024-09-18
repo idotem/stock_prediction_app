@@ -21,16 +21,19 @@
     <div style="width: 30%; margin: 10px; display: inline-block">
         <h2>Decistion Tree Model</h2>
         <h3>Trend: <span id="insider_dt_pred">{{ insider.decision_tree.trend}}</span></h3>
+        <h3>Predictions: <span id="insider_dt_pred">{{ insider.decision_tree.pred}}</span></h3>
         <h3>Accuracy: <span id="insider_dt_acc">{{ insider.decision_tree.accuracy }} </span></h3>
     </div>
     <div style="width: 30%; margin: 10px; display: inline-block">
         <h2>XGClassifier Model</h2>
         <h3>Trend: <span id="insider_xg_pred">{{ insider.xg_classifier.trend}}</span></h3>
+        <h3>Predictions: <span id="insider_xg_pred">{{ insider.xg_classifier.pred}}</span></h3>
         <h3>Accuracy:<span id="insider_xg_acc">{{ insider.xg_classifier.accuracy }} </span></h3>
     </div>
     <div style="width: 30%; margin: 10px; display: inline-block">
         <h2>Sequential Model</h2>
         <h3>Trend: <span id="insider_seq_pred">{{ insider.sequential.trend}}</span></h3>
+        <h3>Predictions: <span id="insider_seq_pred">{{ insider.sequential.pred}}</span></h3>
         <h3>Accuracy:<span id="insider_seq_acc"> {{ insider.sequential.accuracy }} </span></h3>
     </div>
 </div>
@@ -40,18 +43,32 @@
     <div style="width: 30%; margin: 10px; display: inline-block">
         <h2>Decistion Tree Model</h2>
         <h3>Trend: <span id="rcmd_dt_pred">{{ analyst_rcmd.decision_tree.trend}}</span></h3>
+        <h3>Predictions: <span id="rcmd_dt_pred">{{ analyst_rcmd.decision_tree.pred}}</span></h3>
         <h3>Accuracy: <span id="rcmd_dt_acc">{{ analyst_rcmd.decision_tree.accuracy }} </span></h3>
     </div>
     <div style="width: 30%; margin: 10px; display: inline-block">
         <h2>XGClassifier Model</h2>
         <h3>Trend: <span id="rcmd_xg_pred">{{ analyst_rcmd.xg_classifier.trend}}</span></h3>
+        <h3>Predictions: <span id="rcmd_xg_pred">{{ analyst_rcmd.xg_classifier.pred}}</span></h3>
         <h3>Accuracy:<span id="rcmd_xg_acc">{{ analyst_rcmd.xg_classifier.accuracy }} </span></h3>
     </div>
     <div style="width: 30%; margin: 10px; display: inline-block">
         <h2>Sequential Model</h2>
         <h3>Trend: <span id="rcmd_seq_pred">{{ analyst_rcmd.sequential.trend}}</span></h3>
+        <h3>Predictions: <span id="rcmd_seq_pred">{{ analyst_rcmd.sequential.pred}}</span></h3>
         <h3>Accuracy:<span id="rcmd_seq_acc"> {{ analyst_rcmd.sequential.accuracy }} </span></h3>
     </div>
+    <div style="width: 30%; margin: 10px; display: inline-block">
+        <h2>Average</h2>
+        <h3>Trend: <span id="rcmd_seq_pred">{{ analyst_rcmd.average.trend}}</span></h3>
+        <h3>Predictions: <span id="rcmd_seq_pred">{{ analyst_rcmd.average.pred}}</span></h3>
+        <h3>Accuracy:<span id="rcmd_seq_acc"> {{ analyst_rcmd.average.accuracy }} </span></h3>
+    </div>
+    <div style="width: 30%; margin: 10px; display: inline-block">
+        <h2>Stacking</h2>
+        <h3>Trend: <span id="rcmd_seq_pred">{{ analyst_rcmd.stacking.trend}}</span></h3>
+        <h3>Predictions: <span id="rcmd_seq_pred">{{ analyst_rcmd.stacking.pred}}</span></h3>
+        <h3>Accuracy:<span id="rcmd_seq_acc"> {{ analyst_rcmd.stacking.accuracy }} </span></h3> </div>
 </div>
 
 <div style="justify-content: center;">
@@ -59,16 +76,19 @@
     <div style="width: 30%; margin: 10px; display: inline-block">
         <h2>Decistion Tree Model</h2>
         <h3>Trend: <span id="est_dt_pred">{{ analyst_est.decision_tree.trend}}</span></h3>
+        <h3>Predictions: <span id="est_dt_pred">{{ analyst_est.decision_tree.pred}}</span></h3>
         <h3>Accuracy: <span id="est_dt_acc">{{ analyst_est.decision_tree.accuracy }} </span></h3>
     </div>
     <div style="width: 30%; margin: 10px; display: inline-block">
         <h2>XGClassifier Model</h2>
         <h3>Trend: <span id="est_xg_pred">{{ analyst_est.xg_classifier.trend}}</span></h3>
+        <h3>Predictions: <span id="est_xg_pred">{{ analyst_est.xg_classifier.pred}}</span></h3>
         <h3>Accuracy:<span id="est_xg_acc">{{ analyst_est.xg_classifier.accuracy }} </span></h3>
     </div>
     <div style="width: 30%; margin: 10px; display: inline-block">
         <h2>Sequential Model</h2>
         <h3>Trend: <span id="est_seq_pred">{{ analyst_est.sequential.trend}}</span></h3>
+        <h3>Predictions: <span id="est_seq_pred">{{ analyst_est.sequential.pred}}</span></h3>
         <h3>Accuracy:<span id="est_seq_acc"> {{ analyst_est.sequential.accuracy }} </span></h3>
     </div>
 </div>
