@@ -2,6 +2,7 @@ from django.shortcuts import render
 
 from .analyst_estimations import analyst_estimations
 from .analyst_recommendations import analyst_recommendations
+from .graphrag_chat import answer_question
 from .insider_transactions import insider_transactions
 from sklearn.metrics import accuracy_score
 from scipy import stats
@@ -11,6 +12,22 @@ import numpy as np
 #                  'PAYO', 'PEP', 'PFE', 'PLTR', 'SHOP', 'SQ', 'TSLA', 'VRNT']
 stock_symbols = ['AAPL', 'NVDA', 'WBA', 'NKE', 'SHOP']
 percentage_limit = 5
+
+def default_graphrag(request):
+    return render(request, "chat.html")
+
+def only_answer(request):
+    question = request.GET.get("question", "You need to ask a question first!")
+    context = {"answer": answer_question(question)}
+    if question:
+        return render(request, "answer.html", context)
+    else:
+        return
+
+
+
+
+
 
 
 def default_stocks(request):

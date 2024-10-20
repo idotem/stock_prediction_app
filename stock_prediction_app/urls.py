@@ -23,4 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('stocks/', views.default_stocks),
     path('stocks/<str:symbol>/', views.stocks),
+    path('graphrag/', views.default_graphrag),
+    path('chat/', views.only_answer),
 ]
