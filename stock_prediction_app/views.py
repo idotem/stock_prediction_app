@@ -8,26 +8,25 @@ from sklearn.metrics import accuracy_score
 from scipy import stats
 import numpy as np
 
-# stock_symbols = ['AAPL', 'NVDA', 'SNOW', 'AMD', 'CAT', 'CHWY', 'ETSY', 'GOOGL', 'MSFT', 'NVDA', 'PAYC',
-#                  'PAYO', 'PEP', 'PFE', 'PLTR', 'SHOP', 'SQ', 'TSLA', 'VRNT']
-stock_symbols = ['AAPL', 'NVDA', 'WBA', 'NKE', 'SHOP']
-percentage_limit = 5
 
 def default_graphrag(request):
     return render(request, "chat.html")
 
-def only_answer(request):
-    question = request.GET.get("question", "You need to ask a question first!")
-    context = {"answer": answer_question(question)}
+def ask_question(request):
+    question = request.GET.get("question")
     if question:
-        return render(request, "answer.html", context)
+        context_success = {"answer": answer_question(question)}
+        return render(request, "answer.html", context_success)
     else:
-        return
+        context_err = {"error": "You submitted an empty question. Submit a valid one!"}
+        return render(request, "error.html", context_err)
 
 
 
-
-
+# stock_symbols = ['AAPL', 'NVDA', 'SNOW', 'AMD', 'CAT', 'CHWY', 'ETSY', 'GOOGL', 'MSFT', 'NVDA', 'PAYC',
+#                  'PAYO', 'PEP', 'PFE', 'PLTR', 'SHOP', 'SQ', 'TSLA', 'VRNT']
+stock_symbols = ['AAPL', 'NVDA', 'WBA', 'NKE', 'SHOP']
+percentage_limit = 5
 
 
 def default_stocks(request):

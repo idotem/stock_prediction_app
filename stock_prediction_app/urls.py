@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.conf.urls.static import static
 """
 URL configuration for stock_prediction_app project.
 
@@ -24,5 +26,5 @@ urlpatterns = [
     path('stocks/', views.default_stocks),
     path('stocks/<str:symbol>/', views.stocks),
     path('graphrag/', views.default_graphrag),
-    path('chat/', views.only_answer),
-]
+    path('chat/', views.ask_question),
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
