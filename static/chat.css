@@ -1,0 +1,28 @@
+.my-indicator {
+    top: 80vh;
+    display: none;
+}
+
+.htmx-request .my-indicator {
+    position: absolute;
+    display: inline;
+}
+
+.htmx-request.my-indicator {
+    position: absolute;
+    display: inline;
+}
+
+::-webkit-scrollbar {
+    width: 2px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgba(155, 155, 155, 0.5);
+    border-radius: 20px;
+    border: transparent;
+}

@@ -1,0 +1,13 @@
+#!/bin/bash
+#
+if [ $# -eq 0 ]; then
+    echo "No question parameter provided."
+    exit 1
+fi
+
+cd ./graphrag-10k/ || exit
+
+# python -m graphrag.query --root . --method local "$1"
+
+#This is for testing purposes - use the line above:
+echo "INFO: Vector Store Args: {} creating llm client with {'api_key': 'REDACTED,len=164', 'type': openai_chat, 'model': 'gpt-4o-mini', 'max_tokens': 4000, 'temperature': 0.0, 'top_p': 1.0, 'n': 1, 'request_timeout': 180.0, 'api_base': None, 'api_version': None, 'organization': None, 'proxy': None, 'cognitive_services_endpoint': None, 'deployment_name': None, 'model_supports_json': True, 'tokens_per_minute': 0, 'requests_per_minute': 0, 'max_retries': 10, 'max_retry_wait': 10.0, 'sleep_on_rate_limit_recommendation': True, 'concurrent_requests': 25} creating embedding llm client with {'api_key': 'REDACTED,len=164', 'type': openai_embedding, 'model': 'text-embedding-3-small', 'max_tokens': 4000, 'temperature': 0, 'top_p': 1, 'n': 1, 'request_timeout': 180.0, 'api_base': None, 'api_version': None, 'organization': None, 'proxy': None, 'cognitive_services_endpoint': None, 'deployment_name': None, 'model_supports_json': None, 'tokens_per_minute': 0, 'requests_per_minute': 0, 'max_retries': 10, 'max_retry_wait': 10.0, 'sleep_on_rate_limit_recommendation': True, 'concurrent_requests': 25} SUCCESS: Local Search Response: ## Apple Inc.'s Profitability in 2023 In 2023, Apple Inc. reported a total net sales of 383.3 billion, which reflects a decrease of 3% compared to the previous year. Despite this decline in sales, the company maintained a significant gross margin of 169.1 billion, resulting in a gross margin percentage of 44.1% [Data: Reports (0); Sources (17)]. ### Net Income and Financial Performance Apple's net income, which is a critical indicator of profitability, is derived from its total revenue after deducting all expenses, taxes, and costs. While the specific net income figure for 2023 is not detailed in the provided data, the substantial gross margin indicates that the company remained profitable during the fiscal year. The gross margin reflects the company's ability to generate profit from its sales, which is essential for covering operating expenses and contributing to net income [Data: Entities (183); Reports (0)]. ### Conclusion Overall, while Apple faced challenges in terms of declining sales in certain product categories, its strong gross margin and significant revenue suggest that the company remained profitable in 2023. The ability to generate substantial revenue from both products and services, alongside effective cost management, has allowed Apple to sustain its profitability despite market fluctuations [Data: Reports (0); Sources (17)]."

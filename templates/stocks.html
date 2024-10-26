@@ -9,90 +9,113 @@
 <h2>Pick a stock to predict trend</h2>
 <div>
     <label>
-        <select id="stock" style="width: 15rem; height: 3rem; padding: 3px; background-color: beige; color: black">
+        <select id="stock" style="width: 15rem; height: 3rem; padding: 3px; background-color: beige; color: black; margin-bottom: 10px">
             {% for symbol in stocks %}
                 <option value="{{ symbol }}" {% if symbol == selected_symbol %}selected{% endif %}>{{ symbol }}</option>
             {% endfor %}
         </select>
     </label>
 </div>
-<div style="justify-content: center;">
-    <h1 style="text-align: center">Predictions from insider data transactions</h1>
-    <div style="width: 30%; margin: 10px; display: inline-block">
-        <h2>Decistion Tree Model</h2>
-        <h3>Trend: <span id="insider_dt_pred">{{ insider.decision_tree.trend}}</span></h3>
-        <h3>Predictions: <span id="insider_dt_pred">{{ insider.decision_tree.pred}}</span></h3>
-        <h3>Accuracy: <span id="insider_dt_acc">{{ insider.decision_tree.accuracy }} </span></h3>
+<div style="justify-content: center; border: 3px solid black">
+    <h1 style="text-align: center; border: 1px solid black">Predictions from insider data transactions</h1>
+    <div style="width: 30%; margin: 10px; display: inline-block; border: 1px solid black; padding: 5px">
+        <h2>Decision Tree Model</h2>
+        <h3>Trend: <span id="insider_rf_pred">{{ insider.random_forrest.trend }}</span></h3>
+        <h3>Predictions: <span>{{ insider.random_forrest.pred }}</span></h3>
+        <h3>Accuracy: <span id="insider_rf_acc">{{ insider.random_forrest.accuracy }} </span></h3>
     </div>
-    <div style="width: 30%; margin: 10px; display: inline-block">
+    <div style="width: 30%; margin: 10px; display: inline-block; border: 1px solid black; padding: 5px">
         <h2>XGClassifier Model</h2>
-        <h3>Trend: <span id="insider_xg_pred">{{ insider.xg_classifier.trend}}</span></h3>
-        <h3>Predictions: <span id="insider_xg_pred">{{ insider.xg_classifier.pred}}</span></h3>
+        <h3>Trend: <span id="insider_xg_pred">{{ insider.xg_classifier.trend }}</span></h3>
+        <h3>Predictions: <span>{{ insider.xg_classifier.pred }}</span></h3>
         <h3>Accuracy:<span id="insider_xg_acc">{{ insider.xg_classifier.accuracy }} </span></h3>
     </div>
-    <div style="width: 30%; margin: 10px; display: inline-block">
+    <div style="width: 30%; margin: 10px; display: inline-block; border: 1px solid black; padding: 5px">
         <h2>Sequential Model</h2>
-        <h3>Trend: <span id="insider_seq_pred">{{ insider.sequential.trend}}</span></h3>
-        <h3>Predictions: <span id="insider_seq_pred">{{ insider.sequential.pred}}</span></h3>
+        <h3>Trend: <span id="insider_seq_pred">{{ insider.sequential.trend }}</span></h3>
+        <h3>Predictions: <span>{{ insider.sequential.pred }}</span></h3>
         <h3>Accuracy:<span id="insider_seq_acc"> {{ insider.sequential.accuracy }} </span></h3>
     </div>
+    <div style="width: 30%; margin: 10px; display: inline-block; border: 1px solid black; padding: 5px">
+        <h2>Average</h2>
+        <h3>Trend: <span id="insider_avg_pred">{{ insider.average.trend }}</span></h3>
+        <h3>Predictions: <span>{{ insider.average.pred }}</span></h3>
+        <h3>Accuracy:<span id="insider_avg_acc"> {{ insider.average.accuracy }} </span></h3>
+    </div>
+    <div style="width: 30%; margin: 10px; display: inline-block; border: 1px solid black; padding: 5px">
+        <h2>Stacking</h2>
+        <h3>Trend: <span id="insider_stack_pred">{{ insider.stacking.trend }}</span></h3>
+        <h3>Predictions: <span>{{ insider.stacking.pred }}</span></h3>
+        <h3>Accuracy:<span id="insider_stack_acc"> {{ insider.stacking.accuracy }} </span></h3>
+    </div>
 </div>
 
-<div style="justify-content: center;">
-    <h1 style="text-align: center">Predictions from analyst recommendations</h1>
-    <div style="width: 30%; margin: 10px; display: inline-block">
+<div style="justify-content: center; border: 3px solid black">
+    <h1 style="text-align: center; border: 1px solid black">Predictions from analyst recommendations</h1>
+    <div style="width: 30%; margin: 10px; display: inline-block; border: 1px solid black; padding: 5px">
         <h2>Decistion Tree Model</h2>
-        <h3>Trend: <span id="rcmd_dt_pred">{{ analyst_rcmd.decision_tree.trend}}</span></h3>
-        <h3>Predictions: <span id="rcmd_dt_pred">{{ analyst_rcmd.decision_tree.pred}}</span></h3>
-        <h3>Accuracy: <span id="rcmd_dt_acc">{{ analyst_rcmd.decision_tree.accuracy }} </span></h3>
+        <h3>Trend: <span id="rcmd_rf_pred">{{ analyst_rcmd.random_forrest.trend }}</span></h3>
+        <h3>Predictions: <span>{{ analyst_rcmd.random_forrest.pred }}</span></h3>
+        <h3>Accuracy: <span id="rcmd_rf_acc">{{ analyst_rcmd.random_forrest.accuracy }} </span></h3>
     </div>
-    <div style="width: 30%; margin: 10px; display: inline-block">
+    <div style="width: 30%; margin: 10px; display: inline-block; border: 1px solid black; padding: 5px">
         <h2>XGClassifier Model</h2>
-        <h3>Trend: <span id="rcmd_xg_pred">{{ analyst_rcmd.xg_classifier.trend}}</span></h3>
-        <h3>Predictions: <span id="rcmd_xg_pred">{{ analyst_rcmd.xg_classifier.pred}}</span></h3>
+        <h3>Trend: <span id="rcmd_xg_pred">{{ analyst_rcmd.xg_classifier.trend }}</span></h3>
+        <h3>Predictions: <span>{{ analyst_rcmd.xg_classifier.pred }}</span></h3>
         <h3>Accuracy:<span id="rcmd_xg_acc">{{ analyst_rcmd.xg_classifier.accuracy }} </span></h3>
     </div>
-    <div style="width: 30%; margin: 10px; display: inline-block">
+    <div style="width: 30%; margin: 10px; display: inline-block; border: 1px solid black; padding: 5px">
         <h2>Sequential Model</h2>
-        <h3>Trend: <span id="rcmd_seq_pred">{{ analyst_rcmd.sequential.trend}}</span></h3>
-        <h3>Predictions: <span id="rcmd_seq_pred">{{ analyst_rcmd.sequential.pred}}</span></h3>
+        <h3>Trend: <span id="rcmd_seq_pred">{{ analyst_rcmd.sequential.trend }}</span></h3>
+        <h3>Predictions: <span>{{ analyst_rcmd.sequential.pred }}</span></h3>
         <h3>Accuracy:<span id="rcmd_seq_acc"> {{ analyst_rcmd.sequential.accuracy }} </span></h3>
     </div>
-    <div style="width: 30%; margin: 10px; display: inline-block">
+    <div style="width: 30%; margin: 10px; display: inline-block; border: 1px solid black; padding: 5px">
         <h2>Average</h2>
-        <h3>Trend: <span id="rcmd_seq_pred">{{ analyst_rcmd.average.trend}}</span></h3>
-        <h3>Predictions: <span id="rcmd_seq_pred">{{ analyst_rcmd.average.pred}}</span></h3>
-        <h3>Accuracy:<span id="rcmd_seq_acc"> {{ analyst_rcmd.average.accuracy }} </span></h3>
+        <h3>Trend: <span id="rcmd_avg_pred">{{ analyst_rcmd.average.trend }}</span></h3>
+        <h3>Predictions: <span>{{ analyst_rcmd.average.pred }}</span></h3>
+        <h3>Accuracy:<span id="rcmd_avg_acc"> {{ analyst_rcmd.average.accuracy }} </span></h3>
     </div>
-    <div style="width: 30%; margin: 10px; display: inline-block">
+    <div style="width: 30%; margin: 10px; display: inline-block; border: 1px solid black; padding: 5px">
         <h2>Stacking</h2>
-        <h3>Trend: <span id="rcmd_seq_pred">{{ analyst_rcmd.stacking.trend}}</span></h3>
-        <h3>Predictions: <span id="rcmd_seq_pred">{{ analyst_rcmd.stacking.pred}}</span></h3>
-        <h3>Accuracy:<span id="rcmd_seq_acc"> {{ analyst_rcmd.stacking.accuracy }} </span></h3> </div>
+        <h3>Trend: <span id="rcmd_stack_pred">{{ analyst_rcmd.stacking.trend }}</span></h3>
+        <h3>Predictions: <span>{{ analyst_rcmd.stacking.pred }}</span></h3>
+        <h3>Accuracy:<span id="rcmd_stack_acc"> {{ analyst_rcmd.stacking.accuracy }} </span></h3>
+    </div>
 </div>
 
-<div style="justify-content: center;">
-    <h1 style="text-align: center">Predictions from analyst estimations and income statements</h1>
-    <div style="width: 30%; margin: 10px; display: inline-block">
+<div style="justify-content: center; border: 3px solid black">
+    <h1 style="text-align: center; border: 3px solid black">Predictions from analyst estimations and income statements</h1>
+    <div style="width: 30%; margin: 10px; display: inline-block; border: 1px solid black; padding: 5px">
         <h2>Decistion Tree Model</h2>
-        <h3>Trend: <span id="est_dt_pred">{{ analyst_est.decision_tree.trend}}</span></h3>
-        <h3>Predictions: <span id="est_dt_pred">{{ analyst_est.decision_tree.pred}}</span></h3>
-        <h3>Accuracy: <span id="est_dt_acc">{{ analyst_est.decision_tree.accuracy }} </span></h3>
+        <h3>Trend: <span id="est_rf_pred">{{ analyst_est.random_forrest.trend }}</span></h3>
+        <h3>Predictions: <span>{{ analyst_est.random_forrest.pred }}</span></h3>
+        <h3>Accuracy: <span id="est_rf_acc">{{ analyst_est.random_forrest.accuracy }} </span></h3>
     </div>
-    <div style="width: 30%; margin: 10px; display: inline-block">
+    <div style="width: 30%; margin: 10px; display: inline-block; border: 1px solid black; padding: 5px">
         <h2>XGClassifier Model</h2>
-        <h3>Trend: <span id="est_xg_pred">{{ analyst_est.xg_classifier.trend}}</span></h3>
-        <h3>Predictions: <span id="est_xg_pred">{{ analyst_est.xg_classifier.pred}}</span></h3>
+        <h3>Trend: <span id="est_xg_pred">{{ analyst_est.xg_classifier.trend }}</span></h3>
+        <h3>Predictions: <span>{{ analyst_est.xg_classifier.pred }}</span></h3>
         <h3>Accuracy:<span id="est_xg_acc">{{ analyst_est.xg_classifier.accuracy }} </span></h3>
     </div>
-    <div style="width: 30%; margin: 10px; display: inline-block">
+    <div style="width: 30%; margin: 10px; display: inline-block; border: 1px solid black; padding: 5px">
         <h2>Sequential Model</h2>
-        <h3>Trend: <span id="est_seq_pred">{{ analyst_est.sequential.trend}}</span></h3>
-        <h3>Predictions: <span id="est_seq_pred">{{ analyst_est.sequential.pred}}</span></h3>
+        <h3>Trend: <span id="est_seq_pred">{{ analyst_est.sequential.trend }}</span></h3>
+        <h3>Predictions: <span>{{ analyst_est.sequential.pred }}</span></h3>
         <h3>Accuracy:<span id="est_seq_acc"> {{ analyst_est.sequential.accuracy }} </span></h3>
     </div>
 </div>
 
+<div style="justify-content: center; border: 3px solid black">
+    <h1 style="text-align: center; border: 3px solid black">Combined models predictions</h1>
+    <div style="width: 30%; margin: 10px; display: inline-block; border: 1px solid black; padding: 5px">
+        <h2>Combined averages of all 6 working models</h2>
+{#        <h3>Trend: <span id="est_rf_pred">{{ final_pred }}</span></h3>#}
+        <h3>Predictions: <span>{{ final_pred }}</span></h3>
+        <h3>Accuracy: <span id="est_rf_acc">{{ ins_final_acc }} </span></h3>
+        <h3>Accuracy: <span id="est_rf_acc">{{ rcmd_final_acc }}</span></h3>
+    </div>
+</div>
 </body>
 
 <script>
@@ -104,12 +127,12 @@
         window.location.href = `/stocks/${selectedSymbol}/`;
     });
 
-    const insiderDTPredElem = document.getElementById('insider_dt_pred');
-    const insiderDTAccElem = document.getElementById('insider_dt_acc');
-    const insiderDTPred = "{{ insider.decision_tree.trend}}"
-    const insiderDTAcc = "{{ insider.decision_tree.accuracy}}"
+    const insiderDTPredElem = document.getElementById('insider_rf_pred');
+    const insiderDTAccElem = document.getElementById('insider_rf_acc');
+    const insiderDTPred = "{{ insider.random_forrest.trend}}"
+    const insiderDTAcc = "{{ insider.random_forrest.accuracy}}"
     setElementColor(insiderDTPred, insiderDTAcc, insiderDTPredElem, insiderDTAccElem)
-    
+
     const insiderXGPredElem = document.getElementById('insider_xg_pred');
     const insiderXGAccElem = document.getElementById('insider_xg_acc');
     const insiderXGPred = "{{ insider.xg_classifier.trend}}"
@@ -121,14 +144,14 @@
     const insiderSEQPred = "{{ insider.sequential.trend}}"
     const insiderSEQAcc = "{{ insider.sequential.accuracy}}"
     setElementColor(insiderSEQPred, insiderSEQAcc, insiderSEQPredElem, insiderSEQAccElem)
-    
-    
-    const rcmdDTPredElem = document.getElementById('rcmd_dt_pred');
-    const rcmdDTAccElem = document.getElementById('rcmd_dt_acc');
-    const rcmdDTPred = "{{ analyst_rcmd.decision_tree.trend}}"
-    const rcmdDTAcc = "{{ analyst_rcmd.decision_tree.accuracy}}"
+
+
+    const rcmdDTPredElem = document.getElementById('rcmd_rf_pred');
+    const rcmdDTAccElem = document.getElementById('rcmd_rf_acc');
+    const rcmdDTPred = "{{ analyst_rcmd.random_forrest.trend}}"
+    const rcmdDTAcc = "{{ analyst_rcmd.random_forrest.accuracy}}"
     setElementColor(rcmdDTPred, rcmdDTAcc, rcmdDTPredElem, rcmdDTAccElem)
-    
+
     const rcmdXGPredElem = document.getElementById('rcmd_xg_pred');
     const rcmdXGAccElem = document.getElementById('rcmd_xg_acc');
     const rcmdXGPred = "{{ analyst_rcmd.xg_classifier.trend}}"
@@ -140,14 +163,14 @@
     const rcmdSEQPred = "{{ analyst_rcmd.sequential.trend}}"
     const rcmdSEQAcc = "{{ analyst_rcmd.sequential.accuracy}}"
     setElementColor(rcmdSEQPred, rcmdSEQAcc, rcmdSEQPredElem, rcmdSEQAccElem)
-    
-    
-    const estDTPredElem = document.getElementById('est_dt_pred');
-    const estDTAccElem = document.getElementById('est_dt_acc');
-    const estDTPred = "{{ analyst_est.decision_tree.trend}}"
-    const estDTAcc = "{{ analyst_est.decision_tree.accuracy}}"
+
+
+    const estDTPredElem = document.getElementById('est_rf_pred');
+    const estDTAccElem = document.getElementById('est_rf_acc');
+    const estDTPred = "{{ analyst_est.random_forrest.trend}}"
+    const estDTAcc = "{{ analyst_est.random_forrest.accuracy}}"
     setElementColor(estDTPred, estDTAcc, estDTPredElem, estDTAccElem)
-    
+
     const estXGPredElem = document.getElementById('est_xg_pred');
     const estXGAccElem = document.getElementById('est_xg_acc');
     const estXGPred = "{{ analyst_est.xg_classifier.trend}}"
