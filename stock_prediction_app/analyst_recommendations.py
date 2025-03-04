@@ -9,7 +9,6 @@ from xgboost import XGBClassifier
 from sklearn.model_selection import train_test_split, cross_val_score, TimeSeriesSplit
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
-from imblearn.over_sampling import SMOTE
 import tensorflow as tf
 from sklearn.preprocessing import StandardScaler, LabelEncoder, MinMaxScaler, OneHotEncoder
 
@@ -22,19 +21,19 @@ def analyst_recommendations(stock_symbol, percentage_limit):
     rcmd_min_date = analyst_rcmd_df['date'].min()
     today = datetime.date.today()
     stock_prices_df = yf.download('AAPL', rcmd_min_date, today)
-    stock_prices_df.drop(columns=['Open', 'High', 'Low', 'Volume', 'Close'], inplace=True)
-    monthly_max_df = stock_prices_df['Adj Close'].resample('M').max().to_frame()
+    stock_prices_df.drop(columns=['Open', 'High', 'Low', 'Volume'], inplace=True)
+    monthly_max_df = stock_prices_df['Close'].resample('M').max().to_frame()
     monthly_max_df['dym'] = monthly_max_df.index.to_period('M')
     analyst_rcmd_df['dym'] = analyst_rcmd_df['date'].dt.to_period('M')
     merged_df = pd.merge(analyst_rcmd_df, monthly_max_df, how='left', left_on='dym', right_on='dym')
     merged_df = merged_df.sort_values('dym', ascending=True)
     merged_df = merged_df.reset_index(drop=True)
 
-    merged_df['pct_change'] = (merged_df['Adj Close'].shift(-1) - merged_df['Adj Close']) / merged_df[
-        'Adj Close'].shift(-1) * 100
+    merged_df['pct_change'] = (merged_df['Close'].shift(-1) - merged_df['Close']) / merged_df[
+        'Close'].shift(-1) * 100
     merged_df['trend'] = pd.cut(merged_df['pct_change'], bins=[-float('inf'), percentage_limit,
                                                                float('inf')], labels=['Hold', 'Buy'])
-    ready_df = merged_df.drop(columns=['date', 'dym', 'symbol', 'pct_change', 'Adj Close'], inplace=False)
+    ready_df = merged_df.drop(columns=['date', 'dym', 'symbol', 'pct_change', 'Close'], inplace=False)
     ready_df = ready_df.dropna(subset=['trend'])
     label_encoder = LabelEncoder()
     ready_df['trend'] = label_encoder.fit_transform(ready_df['trend'])
@@ -56,7 +55,7 @@ def analyst_recommendations(stock_symbol, percentage_limit):
     xg_acc = accuracy_score(y_test, xg_y_pred)
     xg_pred_labels = label_encoder.inverse_transform(xg_y_pred)
 
-    new_data = merged_df.tail(1).drop(columns=['date', 'dym', 'symbol', 'pct_change', 'trend', 'Adj Close'],
+    new_data = merged_df.tail(1).drop(columns=['date', 'dym', 'symbol', 'pct_change', 'trend', 'Close'],
                                       inplace=False)
     xg_predicted_trend_encoded = xg_model.predict(new_data)
     xg_pred = label_encoder.inverse_transform(xg_predicted_trend_encoded)[0]

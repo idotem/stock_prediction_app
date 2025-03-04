@@ -9,7 +9,6 @@ from xgboost import XGBClassifier
 from sklearn.model_selection import train_test_split, cross_val_score, TimeSeriesSplit
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
-from imblearn.over_sampling import SMOTE
 import tensorflow as tf
 from sklearn.preprocessing import StandardScaler, LabelEncoder, MinMaxScaler, OneHotEncoder
 
@@ -33,17 +32,17 @@ def analyst_estimations(stock_symbol, percentage_limit):
     today = datetime.date.today()
     stock_prices_df = yf.download(stock_symbol, est_min_date, today)
 
-    stock_prices_df.drop(columns=['Open', 'High', 'Low', 'Volume', 'Close'], inplace=True)
-    monthly_max_df = stock_prices_df['Adj Close'].resample('M').max().to_frame()
+    stock_prices_df.drop(columns=['Open', 'High', 'Low', 'Volume'], inplace=True)
+    monthly_max_df = stock_prices_df['Close'].resample('M').max().to_frame()
     monthly_max_df['max_next_3'] = (
-        monthly_max_df['Adj Close']
+        monthly_max_df['Close']
         .shift(-1)
         .rolling(window=3, min_periods=1)
         .max()
     )
 
     monthly_max_df['dym'] = monthly_max_df.index.to_period('M')
-    monthly_max_df = monthly_max_df.drop(columns='Adj Close')
+    monthly_max_df = monthly_max_df.drop(columns='Close')
     merged_est_income_df = pd.merge(analyst_est_df, income_df, how='left', left_on='dym', right_on='dym')
     merged_df = pd.merge(merged_est_income_df, monthly_max_df, how='left', left_on='fillingDym', right_on='dym')
     merged_df = merged_df.sort_values('fillingDym', ascending=False)

@@ -2,14 +2,12 @@ import yfinance as yf
 import numpy as np
 import pandas as pd
 import datetime
-import missingno as msno
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import StackingClassifier
 from xgboost import XGBClassifier
 from sklearn.model_selection import train_test_split, cross_val_score, TimeSeriesSplit
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
-from imblearn.over_sampling import SMOTE
 import tensorflow as tf
 from sklearn.preprocessing import StandardScaler, LabelEncoder, MinMaxScaler, OneHotEncoder
 
@@ -22,16 +20,17 @@ def insider_transactions(stock_symbol, percentage_limit):
     today = datetime.date.today()
 
     stock_prices_df = yf.download(stock_symbol, insider_min_date, today)
+    stock_prices_df.columns = stock_prices_df.columns.droplevel(1)  # Drop the ticker symbol level
 
-    stock_prices_df.drop(columns=['Open', 'High', 'Low', 'Volume', 'Close'], inplace=True)
-    monthly_max_df = stock_prices_df['Adj Close'].to_frame()
+    stock_prices_df.drop(columns=['Open', 'High', 'Low', 'Volume'], inplace=True)
+    monthly_max_df = stock_prices_df['Close'].resample('ME').max().to_frame()
     monthly_max_df = monthly_max_df.reset_index()
     insider_df = insider_df[insider_df['transactionPrice'] != 0.000]
     insider_df = insider_df.reset_index(drop=True)
     merged_df = pd.merge(insider_df, monthly_max_df, how='right', left_on='filingDate', right_on='Date')
     merged_df = merged_df.sort_values('Date', ascending=False)
     merged_df['max_price_after_tran'] = (
-        merged_df['Adj Close']
+        merged_df['Close']
         .shift(-1)
         .rolling(window=30, min_periods=1)
         .max()
@@ -47,7 +46,7 @@ def insider_transactions(stock_symbol, percentage_limit):
     # float('inf')], labels=['Sell', 'Hold', 'Buy'])
 
     ready_df = merged_df.drop(
-        columns=['Date', 'id', 'symbol', 'pct_change', 'Adj Close', 'max_price_after_tran', 'currency', 'filingDate',
+        columns=['Date', 'id', 'symbol', 'pct_change', 'Close', 'max_price_after_tran', 'currency', 'filingDate',
                  'transactionDate', 'source'], inplace=False)
 
     name_encoder = LabelEncoder()

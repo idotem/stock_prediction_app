@@ -1,8 +1,8 @@
 <div style="width: 100%; height: fit-content; position: relative;">
-    {% for paragraph in answer %}
-        <p style="width: fit-content; font-size: 20px; font-family: Montserrat, sans-serif; letter-spacing: 0.7px;
+    {#    {% for paragraph in answer %}#}
+    <div style="width: fit-content; font-size: 20px; font-family: Montserrat, sans-serif; letter-spacing: 0.7px;
          line-height: 1.2; font-weight: 460">
-            {{ paragraph }}
-        </p>
-    {% endfor %}
+        {{ answer | safe }}
+    </div>
+    {#    {% endfor %}#}
 </div>
