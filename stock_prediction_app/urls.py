@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.conf.urls.static import static
+
 """
 URL configuration for stock_prediction_app project.
 
@@ -22,9 +23,12 @@ from django.urls import path
 from stock_prediction_app import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('stocks/', views.default_stocks),
-    path('stocks/<str:symbol>/', views.stocks),
-    path('graphrag/', views.default_graphrag),
-    path('chat/', views.ask_question),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+                  path('admin/', admin.site.urls),
+                  path('stocks/', views.default_stocks),
+                  path('stocks/<str:symbol>/', views.stocks),
+                  path('graphrag/', views.default_graphrag),
+                  path('chat/', views.ask_question),
+                  path('tickers/', views.get_tickers),
+                  path('download-10k/', views.download_10k),
+                  path('index-graphrag/', views.index_graphrag),
+              ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

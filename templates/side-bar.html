@@ -1,0 +1,61 @@
+{% csrf_token %}
+<div class="tickers">
+    <h3>Stock Tickers</h3>
+    <div class="search-container">
+        <input type="text" id="ticker-search" onkeyup="filterTickers()" placeholder="Search for stock symbols..."
+               class="form-control">
+        <select id="ticker-select" name="ticker" class="form-control" size="15">
+            <option value="">Select a ticker</option>
+            {% for ticker in tickers %}
+                <option value="{{ ticker }}">{{ ticker }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="buttons">
+        <button class="download-button" hx-post="/download-10k/" hx-include="#ticker-select" hx-target=".ticker-sidebar"
+                hx-indicator="#tickersSpinner" hx-swap="innerHTML">Download 10-K report
+        </button>
+        <button class="download-button" hx-post="/index-graphrag/" hx-indicator="#tickersSpinner"
+                hx-target="#ticker-sidebar" hx-swap="innerHTML">Index GraphRAG
+        </button>
+    </div>
+    <div>
+        <h3>Indexed documents</h3>
+        <div class="indexed-docs">
+            <ul>
+                {% for doc in indexed_docs %}
+                    <li>{{ doc.name }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div>
+        <h3>Next documents to index</h3>
+        <div class="next-documents-to-index">
+            <ul>
+                {% for doc in next_docs_to_index %}
+                    <li>{{ doc.name }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function filterTickers() {
+            var input, filter, select, options, i, txtValue;
+            input = document.getElementById("ticker-search");
+            filter = input.value.toUpperCase();
+            select = document.getElementById("ticker-select");
+            options = select.getElementsByTagName("option");
+
+            for (i = 0; i < options.length; i++) {
+                txtValue = options[i].textContent || options[i].innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    options[i].style.display = "";
+                } else {
+                    options[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+</div>

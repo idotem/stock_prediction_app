@@ -3,5 +3,8 @@
 /graphrag-10k
 /graphrag-responses
 /colbert
+/data/next_docs_to_index
+/data/10k-html
+/sec-edgar-filings
 
 /stock_prediction_app/__pycache__
