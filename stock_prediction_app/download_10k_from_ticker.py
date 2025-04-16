@@ -5,6 +5,9 @@ from sec_edgar_downloader import Downloader
 import subprocess
 import shutil
 import os
+import pypandoc
+pypandoc.download_pandoc()
+
 
 # Initialize the downloader
 dl = Downloader('Meto', 'madaa_fakaa@yahoo.com')
@@ -24,7 +27,9 @@ def convert_html_to_txt(input_path, output_path):
     print(f"Running Pandoc command...")
     try:
         # Run Pandoc command
-        subprocess.run(["pandoc", input_path, "-t", "plain", "--strip-comments", "-o", output_txt], check=True)
+        output = pypandoc.convert_file(input_path, 'plain', format='html')
+        with open(output_txt, 'w', encoding='utf-8') as f:
+            f.write(output)
         print(f"✅ Conversion successful! File saved at: {output_txt}")
 
     except subprocess.CalledProcessError as e:
