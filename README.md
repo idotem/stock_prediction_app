@@ -1,6 +1,6 @@
 # 10-K Report Analyzer with GraphRAG
 
-![Project Screenshot](static/img.png)
+![Project Screenshot](static/img_new.png)
 
 ## Overview
 
