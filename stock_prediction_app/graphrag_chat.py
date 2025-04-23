@@ -1,4 +1,5 @@
 import os
+import re
 import subprocess
 
 import markdown
@@ -56,11 +57,34 @@ def answer_question(question):
         best_answer = rank_with_colbert(question, answers)
         print(f"best_answer: {best_answer}")
         processed_text = convert_markdown_to_html(best_answer)
+
+        # Pattern that matches "Type (ID)" or "Type (ID1, ID2, ...)"
+        # where Type is one of Reports, Entities, or Relationships and the IDs are comma-separated numbers
+        pattern = r'(Reports|Entities|Relationships) \(([\d, ]+)\)'
+
+        processed_text = re.sub(pattern, replace_ids_with_links, processed_text)
+
         print(f"processed_text{processed_text}")
         return processed_text
     except subprocess.CalledProcessError as e:
         print("Error: ", e)
         return f"An error aragraph occurred: {e}"
+
+
+def replace_ids_with_links(match):
+    type_name = match.group(1)  # Reports, Entities, or Relationships
+    id_list = match.group(2)  # The ID or list of IDs
+
+    ids = [my_id.strip() for my_id in id_list.split(',')]
+    linked_ids = []
+
+    for my_id in ids:
+        linked_ids.append(
+            f'<a href="http://localhost:3000/graphrag-visualizer#/data?filterId={my_id}" target="_blank">{my_id}</a>')
+
+    linked_id_list = ', '.join(linked_ids)
+
+    return f'{type_name} ({linked_id_list})'
 
 
 def query_graphrag(question, context):

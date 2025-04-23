@@ -24,7 +24,7 @@
         <div class="indexed-docs">
             <ul>
                 {% for doc in indexed_docs %}
-                    <li>{{ doc.name }}</li>
+                    <li><a href="http://localhost:8000/open-10k-indexed/{{ doc.name }}">{{ doc.name }}</a></li>
                 {% endfor %}
             </ul>
         </div>
@@ -34,7 +34,7 @@
         <div class="next-documents-to-index">
             <ul>
                 {% for doc in next_docs_to_index %}
-                    <li>{{ doc.name }}</li>
+                    <li><a href="http://localhost:8000/open-10k/{{ doc.name }}">{{ doc.name }}</a></li>
                 {% endfor %}
             </ul>
         </div>

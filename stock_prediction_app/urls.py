@@ -31,4 +31,6 @@ urlpatterns = [
                   path('tickers/', views.get_tickers),
                   path('download-10k/', views.download_10k),
                   path('index-graphrag/', views.index_graphrag),
+                  path('open-10k/<str:file_name>/', views.open_text_file_from_next_to_index),
+                  path('open-10k-indexed/<str:file_name>/', views.open_text_file_from_indexed),
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

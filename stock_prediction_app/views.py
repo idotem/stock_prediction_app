@@ -1,3 +1,5 @@
+import os
+
 import numpy as np
 from django.shortcuts import render
 from scipy import stats
@@ -10,6 +12,7 @@ from .get_indexed_graphrag_docs import get_indexed_graphrag_docs
 from .graphrag_chat import answer_question
 from .index_graphrag_from_web import move_downloaded_files_and_index
 from .insider_transactions import insider_transactions
+from .open_text_file import open_text_file
 
 
 def default_graphrag(request):
@@ -67,6 +70,16 @@ def index_graphrag(request):
         return render(request, 'side-bar.html', context)
     context = get_tickers_context()
     return render(request, "side-bar.html", context)
+
+
+def open_text_file_from_next_to_index(request, file_name):
+    file_path = os.path.join('data', 'next_docs_to_index', file_name)
+    return open_text_file(file_path, file_name)
+
+
+def open_text_file_from_indexed(request, file_name):
+    file_path = os.path.join('graphrag-10k', 'input', file_name)
+    return open_text_file(file_path, file_name)
 
 
 # stock_symbols = ['AAPL', 'NVDA', 'SNOW', 'AMD', 'CAT', 'CHWY', 'ETSY', 'GOOGL', 'MSFT', 'NVDA', 'PAYC',

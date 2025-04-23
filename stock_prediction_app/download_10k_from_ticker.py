@@ -1,11 +1,13 @@
 import os
 import re
-import htmltextconvert
 from sec_edgar_downloader import Downloader
+import re
 import subprocess
-import shutil
-import os
+from inscriptis import get_text
+
 import pypandoc
+from sec_edgar_downloader import Downloader
+
 pypandoc.download_pandoc()
 
 
@@ -20,22 +22,32 @@ def convert_html_to_txt(input_path, output_path):
 
     # Ensure the input file exists, create it if not
     if not os.path.isfile(input_path):
-        print(f"⚠️ File not found at {input_path}, creating a new one.")
-        with open(input_path, "w", encoding="utf-8") as f:
-            f.write("<html><body><p>Placeholder content</p></body></html>")  # Default content
+        print(f"⚠️ File not found at {input_path}.")
 
-    print(f"Running Pandoc command...")
+    print(f"Running inscriptis command...")
     try:
-        # Run Pandoc command
-        output = pypandoc.convert_file(input_path, 'plain', format='html')
+        with open(input_path, "r", encoding="utf-8") as f:
+            html_content = f.read()
+            output = get_text(html_content)
         with open(output_txt, 'w', encoding='utf-8') as f:
             f.write(output)
         print(f"✅ Conversion successful! File saved at: {output_txt}")
-
     except subprocess.CalledProcessError as e:
         print(f"❌ Error during conversion: {e}")
     except Exception as e:
         print(f"❌ Unexpected error: {e}")
+
+    # print(f"Running Pandoc command...")
+    # try:
+    #     # Run Pandoc command
+    #     output = pypandoc.convert_file(input_path, 'plain', format='html')
+    #     with open(output_txt, 'w', encoding='utf-8') as f:
+    #         f.write(output)
+    #     print(f"✅ Conversion successful! File saved at: {output_txt}")
+    # except subprocess.CalledProcessError as e:
+    #     print(f"❌ Error during conversion: {e}")
+    # except Exception as e:
+    #     print(f"❌ Unexpected error: {e}")
 
 def download_10k_from_ticker(ticker):
     filing_type = "10-K"
