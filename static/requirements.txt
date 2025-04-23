@@ -1,0 +1,16 @@
+django
+flask
+numpy
+pandas
+tensorflow
+requests
+scikit-learn
+xgboost
+missingno
+yfinance
+inscriptis
+sec_edgar_downloader
+pypandoc
+torch
+colbert
+scipy

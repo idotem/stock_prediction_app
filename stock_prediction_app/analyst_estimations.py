@@ -1,16 +1,14 @@
-import yfinance as yf
+import datetime
+
 import numpy as np
 import pandas as pd
-import datetime
-import missingno as msno
-from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import StackingClassifier
-from xgboost import XGBClassifier
-from sklearn.model_selection import train_test_split, cross_val_score, TimeSeriesSplit
+import tensorflow as tf
+import yfinance as yf
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
-import tensorflow as tf
-from sklearn.preprocessing import StandardScaler, LabelEncoder, MinMaxScaler, OneHotEncoder
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder, MinMaxScaler
+from xgboost import XGBClassifier
 
 
 def analyst_estimations(stock_symbol, percentage_limit):

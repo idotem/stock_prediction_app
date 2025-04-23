@@ -1,17 +1,13 @@
 import os
 import re
-from sec_edgar_downloader import Downloader
-import re
 import subprocess
-from inscriptis import get_text
 
 import pypandoc
+from inscriptis import get_text
 from sec_edgar_downloader import Downloader
 
 pypandoc.download_pandoc()
 
-
-# Initialize the downloader
 dl = Downloader('Meto', 'madaa_fakaa@yahoo.com')
 
 
@@ -48,6 +44,7 @@ def convert_html_to_txt(input_path, output_path):
     #     print(f"❌ Error during conversion: {e}")
     # except Exception as e:
     #     print(f"❌ Unexpected error: {e}")
+
 
 def download_10k_from_ticker(ticker):
     filing_type = "10-K"
@@ -86,5 +83,3 @@ def download_10k_from_ticker(ticker):
     output_file = f"data/next_docs_to_index/{ticker}.txt"
 
     convert_html_to_txt(input_file, output_file)
-
-

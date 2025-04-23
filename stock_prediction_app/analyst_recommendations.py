@@ -1,17 +1,16 @@
-import yfinance as yf
+import datetime
+
 import numpy as np
 import pandas as pd
-import datetime
-import missingno as msno
-from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import StackingClassifier
-from xgboost import XGBClassifier
-from sklearn.model_selection import train_test_split, cross_val_score, TimeSeriesSplit
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score
 import tensorflow as tf
-from sklearn.preprocessing import StandardScaler, LabelEncoder, MinMaxScaler, OneHotEncoder
-
+import yfinance as yf
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import StackingClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder
+from xgboost import XGBClassifier
 
 
 def analyst_recommendations(stock_symbol, percentage_limit):
