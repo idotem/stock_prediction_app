@@ -1,6 +1,12 @@
 .idea
 
-/graphrag-10k
+/graphrag-10k/input
+/graphrag-10k/cache
+/graphrag-10k/.env
+/graphrag-10k/logs
+/graphrag-10k/output
+/graphrag-10k/prompts
+
 /graphrag-responses
 /colbert
 /data/next_docs_to_index

@@ -36,6 +36,7 @@ This application allows users to download and analyze SEC 10-K reports for publi
 - Django
 - Required Python packages (see requirements.txt)
 - OpenAI API access (or you can configure graphrag yourself with whatever model you see fit)
+- Set up GraphRAG in **graphrag-10k** 
 
 ### Installation
 
