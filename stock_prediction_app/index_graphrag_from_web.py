@@ -1,8 +1,9 @@
 import os
 import shutil
-
+import subprocess
 
 def move_downloaded_files_and_index():
+    os.environ["PATH"] += ":/home/meto/.local/bin"  # Adjust this path accordingly
     """
     Moves all files from 'data/next_docs_to_index' to 'graphrag-10k/input'
     and runs the 'graphrag index' command in the 'graphrag-10k' folder.
@@ -33,11 +34,26 @@ def move_downloaded_files_and_index():
                 shutil.move(source_file, destination_file)
                 moved_files.append((destination_file, source_file))  # Keep track of moved files
 
-        # Change to graphrag-10k directory and run the 'graphrag index' command
-        os.chdir("graphrag-10k")
-        return_code = os.system("graphrag index --root .")
-        print(f"Return code: {return_code}")
+        # Use subprocess.run instead of os.system
+        try:
+            script_path = os.path.join(original_dir, "index-graphrag.sh")
+            result = subprocess.run(
+                [script_path],
+                capture_output=True,
+                text=True,
+                check=False
+            )
+            return_code = result.returncode
+            print(f"Return code: {return_code}")
+            print(f"GraphRAG stdout: {result.stdout}")
+            if result.stderr:
+                print(f"GraphRAG stderr: {result.stderr}")
+        except FileNotFoundError:
+            print("Error: graphrag command not found. Make sure it's installed and in your PATH.")
+            return_code = 127  # Standard shell code for command not found
+
         print(f"Moved files: {moved_files}")
+
         # Check if the command executed successfully
         if return_code == 0:
             print("GraphRAG indexing completed successfully!")
