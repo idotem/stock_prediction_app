@@ -19,26 +19,26 @@
                 hx-target=".ticker-sidebar" hx-swap="innerHTML">Index GraphRAG
         </button>
     </div>
-    <div>
+    <div class="card">
         <h3>Indexed documents</h3>
-        <div class="indexed-docs">
-            <ul>
-                {% for doc in indexed_docs %}
-                    <li><a href="http://localhost:8000/open-10k-indexed/{{ doc.name }}">{{ doc.name }}</a></li>
-                {% endfor %}
-            </ul>
-        </div>
+        <ul class="document-list">
+            {% for doc in indexed_docs %}
+                <li><span class="icon">📄</span> <a
+                        href="http://localhost:8000/open-10k-indexed/{{ doc.name }}">{{ doc.name }}</a></li>
+            {% endfor %}
+        </ul>
     </div>
-    <div>
-        <h3>Next documents to index</h3>
-        <div class="next-documents-to-index">
-            <ul>
-                {% for doc in next_docs_to_index %}
-                    <li><a href="http://localhost:8000/open-10k/{{ doc.name }}">{{ doc.name }}</a></li>
-                {% endfor %}
-            </ul>
-        </div>
+
+    <div class="card">
+        <h3>Documents to index</h3>
+        <ul class="document-list">
+            {% for doc in next_docs_to_index %}
+                <li><span class="icon">📄</span> <a
+                        href="http://localhost:8000/open-10k/{{ doc.name }}">{{ doc.name }}</a></li>
+            {% endfor %}
+        </ul>
     </div>
+
 
     <script>
         function filterTickers() {

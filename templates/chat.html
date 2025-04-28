@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="{% static '/chat.css' %}">
     <style>
 
+
         /* New styles for ticker sidebar */
         .layout-container {
             display: flex;
@@ -25,7 +26,7 @@
             width: 20%;
             height: calc(100vh - 40px);
             padding: 20px;
-            background-color: #f5f5f5;
+            background-color: #6E9887;
             border-right: 1px solid #ddd;
             overflow-y: auto;
         }
@@ -46,6 +47,9 @@
 
         #ticker-search {
             margin-bottom: 8px;
+            border-radius: 12px;
+            background-color: #F1FAEE;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .form-control {
@@ -60,6 +64,9 @@
         #ticker-select {
             height: 20vh;
             font-family: Montserrat, sans-serif;
+            background-color: #F1FAEE;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .chat-container {
@@ -85,53 +92,192 @@
             margin-bottom: 20px;
         }
 
-        .indexed-docs {
-            height: 20vh;
-            overflow-y: auto;
-            margin-bottom: 10px;
+        .card {
+            background-color: #F1FAEE;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        .next-docs-to-index {
-            height: 20vh;
-            overflow-y: auto;
+        h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: #333333;
+            text-align: center;
         }
+
+        .document-list {
+            list-style-type: none;
+            padding: 0;
+            height: 12vh;
+            overflow-y: auto;
+            margin: 0;
+        }
+
+        .document-list li {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        .document-list li .icon {
+            margin-right: 8px;
+            font-size: 16px;
+        }
+
+        .document-list li a {
+            text-decoration: none;
+            color: #007acc;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .document-list li a:hover {
+            color: #005a99;
+            text-decoration: underline;
+        }
+
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        :root {
+            --input-bg-color: #ffffff; /* White background for input */
+            --input-border-color: #dfe1e5; /* Subtle grey border */
+            --input-focus-border-color: #8ab4f8; /* Light blue focus border */
+            --input-text-color: #202124; /* Dark grey text */
+            --input-placeholder-color: #5f6368; /* Lighter grey for placeholder */
+            --button-bg-color: #f8f9fa; /* Light grey button background */
+            --button-bg-hover-color: #f1f3f4; /* Slightly darker grey on hover */
+            --button-text-color: #3c4043; /* Dark grey button text */
+            --button-border-radius: 18px; /* Rounded corners */
+            --input-padding-vertical: 10px;
+            --input-padding-horizontal: 16px;
+        }
+
+        .chat-input-container {
+            display: flex;
+            align-items: flex-end; /* Align items to the bottom */
+            padding: 8px;
+            background-color: var(--input-bg-color);
+            border: 1px solid var(--input-border-color);
+            border-radius: var(--button-border-radius); /* Container matches button rounding */
+            box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15); /* Subtle shadow */
+            max-width: 700px; /* Example max width */
+            width: 100%; /* Take available width up to max-width */
+            box-sizing: border-box;
+        }
+
+        .chat-textarea {
+            flex-grow: 1; /* Take up available space */
+            border: none; /* Border is now on the container */
+            background-color: transparent; /* Inherit container background */
+            padding: var(--input-padding-vertical) var(--input-padding-horizontal);
+            font-size: 16px;
+            line-height: 1.5;
+            color: var(--input-text-color);
+            resize: none; /* Disable manual resizing handle */
+            outline: none; /* Remove default focus outline */
+            min-height: calc(1em * 1.5 + 2 * var(--input-padding-vertical)); /* Minimum height for one line */
+            max-height: 200px; /* Optional: limit growth */
+            overflow-y: auto; /* Add scrollbar if content exceeds max-height */
+            box-sizing: border-box;
+        }
+
+        .chat-textarea::placeholder {
+            color: var(--input-placeholder-color);
+            opacity: 1; /* Firefox needs this */
+        }
+
+        .chat-textarea:focus-within .chat-input-container, /* Not quite right, need JS or :focus-within on container */
+        .chat-input-container:has(.chat-textarea:focus) { /* Use :has() if browser support is sufficient */
+            border-color: var(--input-focus-border-color);
+            box-shadow: 0 0 0 2px var(--input-focus-border-color); /* Example focus ring */
+        }
+
+        .chat-button {
+            flex-shrink: 0; /* Prevent button from shrinking */
+            background-color: var(--button-bg-color);
+            border: none;
+            color: var(--button-text-color);
+            padding: var(--input-padding-vertical) var(--input-padding-horizontal);
+            border-radius: var(--button-border-radius);
+            cursor: pointer;
+            font-size: 14px; /* Slightly smaller font for button */
+            font-weight: 500;
+            margin-left: 8px; /* Space between textarea and button */
+            outline: none;
+            transition: background-color 0.2s ease;
+            height: calc(1em * 1.5 + 2 * var(--input-padding-vertical)); /* Match min-height of textarea */
+            line-height: 1.5; /* Match textarea line-height */
+            box-sizing: border-box;
+            align-self: center; /* Center button vertically if needed */
+        }
+
+        .chat-button:hover {
+            background-color: var(--button-bg-hover-color);
+        }
+
+        .chat-button:active {
+            background-color: #e8eaed; /* Slightly darker for active state */
+        }
+
     </style>
 </head>
-<body style="height: 100vh; overflow: hidden; margin: 0; padding: 0;">
+<body style="height: 100vh; overflow: hidden; margin: 0; padding: 0; background-color: antiquewhite;">
 <div class="layout-container">
     <!-- Ticker Sidebar - Load using htmx -->
     <div class="ticker-sidebar-wrapper">
         <div class="ticker-sidebar" hx-get="/tickers" hx-trigger="load" hx-swap="innerHTML"
              hx-indicator="#tickersSpinner">
         </div>
-        <img style="bottom: 5%;" id="tickersSpinner" class="my-indicator"
+        <img style="top: 45%; left: 7vw" id="tickersSpinner" class="my-indicator"
              src="{% static '/three-dots.svg' %}" alt=""/>
     </div>
 
     <!-- Chat Container -->
     <div class="chat-container">
         <div style="width: 70%; margin: auto">
-            <h1 style="text-align: center; font-family: Montserrat, sans-serif">GraphRAG 10K Chat</h1>
+            <h1 style="text-align: center; font-family: Montserrat, sans-serif; color: #264b26">GraphRAG 10K Chat</h1>
         </div>
         <div style="width: 90%; margin: auto; height: 60vh; overflow-y: scroll; top: 10px; padding: 0 5px 150px 5px;
         border: 0; border-bottom-left-radius: 10px; border-top-left-radius: 10px"
              id="chatBox">
         </div>
-        <div style="height: 15vh; bottom: 0; width: 90%; margin: 20px auto auto auto;">
+        <div style="height: 15vh; bottom: 0; width: 90%; padding-left: 20%">
             <form id="chatForm" hx-get="/chat" hx-target="#chatBox" hx-swap="beforeend"
                   hx-on--after-request="this.reset()"
                   hx-disabled-elt="button" hx-trigger="submit, keyup[ctrlKey&&key=='Enter'] from:body"
                   hx-on:htmx:before-request="showQuestion()">
-                <label for="question"></label>
-                <textarea style="width: 70%; height: 80px; border: 0; border-radius: 20px; background-color: #264b26;
-                                 float: left; font-size: 22px; padding: 5px 20px 5px 20px;"
-                          type="text" name="question" id="question" placeholder="Write your question here"></textarea>
-                <button style="width: 19%; height: 50px; border: 5px solid #264b26; border-radius: 20px; color: #264b26;
-                               font-size: 22px; float: right; cursor: pointer; padding: 5px 20px 5px 20px"
-                        type="submit"
-                        hx-indicator="#spinner">Ask
-                </button>
-                <img style="position: absolute; bottom: 15%; left: 58%" id="spinner" class="my-indicator"
+                <div class="chat-input-container">
+                    <label for="question" class="visually-hidden">Chat Input</label> <textarea class="chat-textarea"
+                                                                                               name="question"
+                                                                                               id="question"
+                                                                                               placeholder="Write your question here"
+                                                                                               rows="1"></textarea>
+                    <button class="chat-button"
+                            type="submit"
+                            hx-indicator="#spinner"
+                            aria-label="Send message">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24px" height="24px"
+                             fill="currentColor" aria-hidden="true" focusable="false">
+                            <path d="M0 0h24v24H0V0z" fill="none"/>
+                            <path d="m4 12 1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <img style="position: absolute; bottom: 15%; left: 58%;" id="spinner" class="my-indicator"
                      src="{% static '/three-dots.svg' %}" alt=""/>
             </form>
         </div>
@@ -172,11 +318,11 @@
         outerDiv.style.justifyContent = 'flex-end';
         outerDiv.style.padding = '20px 0 20px 0';
         const innerDiv = document.createElement('div');
-        innerDiv.style.fontSize = '20px';
+        innerDiv.style.fontSize = '18px';
         innerDiv.style.textAlign = 'center';
-        innerDiv.style.border = '0';
+        innerDiv.style.border = '1px solid #6E9887';
         innerDiv.style.borderRadius = '30px';
-        innerDiv.style.backgroundColor = 'lightgray';
+        innerDiv.style.backgroundColor = '#E3D3C2';
         innerDiv.style.color = 'black';
         innerDiv.style.width = '75%';
         innerDiv.style.overflowWrap = 'break-word';
@@ -192,12 +338,12 @@
         return outerDiv;
     }
 
-   document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         // Get the CSRF token from the meta tag
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
         // Add a listener for all HTMX AJAX requests
-        document.body.addEventListener('htmx:configRequest', function(event) {
+        document.body.addEventListener('htmx:configRequest', function (event) {
             // Add the CSRF token to the headers
             event.detail.headers['X-CSRFToken'] = csrfToken;
         });
