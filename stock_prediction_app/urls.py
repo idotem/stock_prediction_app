@@ -24,8 +24,6 @@ from stock_prediction_app import views
 
 urlpatterns = [
                   path('admin/', admin.site.urls),
-                  path('stocks/', views.default_stocks),
-                  path('stocks/<str:symbol>/', views.stocks),
                   path('graphrag/', views.default_graphrag),
                   path('chat/', views.ask_question),
                   path('tickers/', views.get_tickers),

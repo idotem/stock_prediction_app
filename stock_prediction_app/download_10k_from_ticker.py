@@ -33,19 +33,6 @@ def convert_html_to_txt(input_path, output_path):
     except Exception as e:
         print(f"❌ Unexpected error: {e}")
 
-    # print(f"Running Pandoc command...")
-    # try:
-    #     # Run Pandoc command
-    #     output = pypandoc.convert_file(input_path, 'plain', format='html')
-    #     with open(output_txt, 'w', encoding='utf-8') as f:
-    #         f.write(output)
-    #     print(f"✅ Conversion successful! File saved at: {output_txt}")
-    # except subprocess.CalledProcessError as e:
-    #     print(f"❌ Error during conversion: {e}")
-    # except Exception as e:
-    #     print(f"❌ Unexpected error: {e}")
-
-
 def download_10k_from_ticker(ticker):
     filing_type = "10-K"
 

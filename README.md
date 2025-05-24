@@ -43,10 +43,10 @@ This application allows users to download and analyze SEC 10-K reports for publi
 1. Clone this repository
 2. Install dependencies:
    ```bash
-   pip install -r static/requirements.txt
+   pip install -r requirements.txt
    ```
-3. Configure your OpenAI API key
+3. Create .env file in /graphrag-10k folder and configure your OpenAI API key with name GRAPHRAG_API_KEY
 4. Start the Django server:
    ```bash
    python manage.py runserver
-   ```
+5. Download documents and index graphrag. Then query and ask questions.
