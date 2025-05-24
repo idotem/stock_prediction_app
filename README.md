@@ -16,6 +16,7 @@ This application allows users to download and analyze SEC 10-K reports for publi
 ## Technology Stack
 
 - **Backend**: Django
+- **Frontend**: HTMX
 - **NLP Processing**: GraphRAG for document indexing and context retrieval
 - **AI Model**: OpenAI 4o-mini for response generation
 
