@@ -7,6 +7,14 @@
 /graphrag-10k/output
 /graphrag-10k/prompts
 
+/graphrag-eval/input
+/graphrag-eval/cache
+/graphrag-eval/.env
+/graphrag-eval/logs
+/graphrag-eval/output
+/graphrag-eval/prompts
+
+
 /graphrag-responses
 /colbert
 /data/next_docs_to_index

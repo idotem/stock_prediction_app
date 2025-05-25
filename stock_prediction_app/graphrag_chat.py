@@ -59,8 +59,8 @@ def answer_question(question):
         processed_text = convert_markdown_to_html(best_answer)
 
         # Pattern that matches "Type (ID)" or "Type (ID1, ID2, ...)"
-        # where Type is one of Reports, Entities, or Relationships and the IDs are comma-separated numbers
-        pattern = r'(Reports|Entities|Relationships) \(([\d, ]+)\)'
+        # where Type is one of Reports, Entities, Relationships or Sources and the IDs are comma-separated numbers
+        pattern = r'(Reports|Entities|Relationships|Sources) \(([\d, ]+)\)'
 
         processed_text = re.sub(pattern, replace_ids_with_links, processed_text)
 
@@ -89,6 +89,18 @@ def replace_ids_with_links(match):
 
 def query_graphrag(question, context):
     result = subprocess.run(['/home/meto/personal-projects/stock_prediction_app/query-graphrag.sh',
+                             question, context],
+                            stdout=subprocess.PIPE,
+                            stderr=subprocess.PIPE,
+                            text=True
+                            )
+    err = result.stderr
+    if err:
+        print(err)
+    return result.stdout
+
+def query_graphrag_eval(question, context):
+    result = subprocess.run(['/home/meto/personal-projects/stock_prediction_app/query-graphrag-eval.sh',
                              question, context],
                             stdout=subprocess.PIPE,
                             stderr=subprocess.PIPE,
