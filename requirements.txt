@@ -9,4 +9,4 @@ cmake
 ninja
 torch>=1.12.0
 git+https://github.com/stanford-futuredata/ColBERT.git
-graphrag>=0.1.0
+graphrag==1.2.0

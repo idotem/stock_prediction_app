@@ -19,6 +19,9 @@ def convert_html_to_txt(input_path, output_path):
     # Ensure the input file exists, create it if not
     if not os.path.isfile(input_path):
         print(f"⚠️ File not found at {input_path}.")
+        return
+
+    os.makedirs(os.path.dirname(output_txt), exist_ok=True)
 
     print(f"Running inscriptis command...")
     try:
@@ -54,13 +57,14 @@ def download_10k_from_ticker(ticker):
     print(f"Extracting HTML content from SEC file...")
     # **Extract only the real HTML part**
     html_match = re.search(r"(<html.*?</html>)", raw_content, re.DOTALL | re.IGNORECASE)
+    print(f"Cleaning HTML content...")
     if html_match:
         html_content = html_match.group(1)
     else:
         print("Warning: No proper HTML found! Using full file as fallback.")
         html_content = raw_content  # Fall back to full text if no HTML is found
 
-    print(f"Cleaning HTML content...")
+    os.makedirs(os.path.dirname(f"data/10k-html"), exist_ok=True)
     # Save to a cleaned html file
     html_file = f"data/10k-html/{ticker}.html"
     with open(html_file, "w", encoding="utf-8") as file:
