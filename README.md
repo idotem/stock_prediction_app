@@ -8,7 +8,7 @@ This application allows users to download and analyze SEC 10-K reports for publi
 
 ## Features
 
-- **Document Retrieval**: Download 10-K reports for any publicly traded company
+- **Document Retrieval**: Download 10-K reports for any publicly traded company (NYSE, NASDAQ)
 - **GraphRAG Indexing**: Process documents using Graph Retrieval Augmented Generation for enhanced context awareness
 - **Interactive Q&A**: Ask questions about company financials, risks, and business operations
 - **AI-Powered Analysis**: Leverages OpenAI's 4o-mini model to generate comprehensive responses
@@ -17,7 +17,7 @@ This application allows users to download and analyze SEC 10-K reports for publi
 
 - **Backend**: Django
 - **Frontend**: HTMX
-- **NLP Processing**: GraphRAG for document indexing and context retrieval
+- **NLP**: GraphRAG for document indexing and context retrieval
 - **AI Model**: OpenAI 4o-mini for response generation
 
 ## How It Works
@@ -35,7 +35,7 @@ This application allows users to download and analyze SEC 10-K reports for publi
 
 - Python 3.11+
 - Django
-- Required Python packages (see requirements.txt)
+- Required Python packages (see [requirements.txt](https://github.com/idotem/stock_prediction_app/blob/graduation/requirements.txt)
 - OpenAI API access (or you can configure graphrag yourself with whatever model you see fit)
 - Set up GraphRAG in **graphrag-10k** 
 
@@ -46,8 +46,18 @@ This application allows users to download and analyze SEC 10-K reports for publi
    ```bash
    pip install -r requirements.txt
    ```
-3. Create .env file in /graphrag-10k folder and configure your OpenAI API key with name GRAPHRAG_API_KEY
-4. Start the Django server:
+3. Initialize graphrag in graphrag-10k folder. Inside graphrag-10k, execute:
+   ```bash
+   graphrag index --root .
+   ```
+   This will generate settings.yaml and .env files in graphrag-10k.
+4. If you want to use the template-settings.yaml that's already in graphrag-10k:
+   - Delete the generated settings.yaml and rename the template-settings.yaml into settings.yaml.
+   - Set your OpenAI API key as GRAPHRAG_API_KEY variable in generated .env file.
+   
+   _If you don't want to use the template-settings.yaml, you can configure the graphrag yourself with any 
+   model you think is best!_
+5. Start the Django server:
    ```bash
    python manage.py runserver
-5. Download documents and index graphrag. Then query and ask questions.
+6. Download documents and index graphrag. Then query and ask questions.
