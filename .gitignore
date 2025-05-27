@@ -1,19 +1,12 @@
 .idea
 
-/graphrag-10k/input
-/graphrag-10k/cache
-/graphrag-10k/.env
-/graphrag-10k/logs
-/graphrag-10k/output
-/graphrag-10k/prompts
 
-/graphrag-eval/input
-/graphrag-eval/cache
-/graphrag-eval/.env
-/graphrag-eval/logs
-/graphrag-eval/output
-/graphrag-eval/prompts
+/graphrag-10k/*
+!/graphrag-10k/template-settings.yaml
 
+
+/graphrag-eval/*
+!/graphrag-eval/settings.yaml
 
 /graphrag-responses
 /colbert
