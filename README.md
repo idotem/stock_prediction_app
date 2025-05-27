@@ -64,4 +64,25 @@ If you try running it directly on **Windows**, you could get into some problems 
 5. Start the Django server:
    ```bash
    python manage.py runserver
+   ```
 6. Download documents and index graphrag. Then query and ask questions.
+
+##### Optionally:
+If you want to use graphrag-visualizer to follow the references that GraphRAG provides:
+1. You need to clone the updated version that makes that possible from [here](https://github.com/idotem/graphrag-visualizer).
+   ```bash
+   git clone https://github.com/idotem/graphrag-visualizer
+   ```
+2. Go to graphrag-visualizer installation and run:
+   ```bash
+   npm install 
+   ```
+3. You need to copy the generated **.parquet** files that are in _graphrag-10k/output_ folder after indexing of documents 
+to the graphrag-visualizer/public/artifacts folder. _(You need to do this after adding new documents to the graph)_
+4. Start the server:
+   ```bash
+   npm start
+   ```
+
+   Now when you click on each reference from the answer, you can view exactly from where it comes from
+(pay attention wheather it's entity, relationship etc.)
