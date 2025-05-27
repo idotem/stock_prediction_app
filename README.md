@@ -52,7 +52,7 @@ If you try running it directly on **Windows**, you could get into some problems 
    ```
 3. Initialize graphrag in graphrag-10k folder. Inside graphrag-10k, execute:
    ```bash
-   graphrag index --root .
+   graphrag init --root .
    ```
    This will generate settings.yaml and .env files in graphrag-10k.
 4. If you want to use the template-settings.yaml that's already in graphrag-10k:
@@ -77,8 +77,8 @@ If you want to use graphrag-visualizer to follow the references that GraphRAG pr
    ```bash
    npm install 
    ```
-3. You need to copy the generated **.parquet** files that are in _graphrag-10k/output_ folder after indexing of documents 
-to the graphrag-visualizer/public/artifacts folder. _(You need to do this after adding new documents to the graph)_
+3. You need to copy the generated **.parquet** files that are in _graphrag-10k/output_ folder 
+to the graphrag-visualizer/public/artifacts folder. _(You need to do this every time after indexing the graphrag)_
 4. Start the server:
    ```bash
    npm start
