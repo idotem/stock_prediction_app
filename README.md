@@ -31,6 +31,10 @@ This application allows users to download and analyze SEC 10-K reports for publi
 
 ## Getting Started
 
+#### Note:
+_The following instructions are tested and work on **linux(fedora)** as well as on **wsl(Ubuntu)** on Windows.
+If you try running it directly on **Windows**, you could get into some problems with ColBERT and GraphRAG._
+
 ### Prerequisites
 
 - Python 3.11+
